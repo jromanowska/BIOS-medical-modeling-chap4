@@ -182,3 +182,7 @@ $$
   - minimum variability within subgroup
 
 - many trees: _random forest_
+
+:::notes
+[Hands-on ML with R](https://bradleyboehmke.github.io/HOML/DT.html)
+:::
