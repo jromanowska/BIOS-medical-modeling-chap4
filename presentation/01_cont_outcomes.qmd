@@ -1,0 +1,156 @@
+---
+author: "Julia Romanowska"
+title: "Statistical Models for Prediction, Chap.4"
+subtitle: "4.1 Continuous Outcomes"
+date: "2024-12-19"
+format:
+  revealjs:
+    theme: night
+    embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(fontawesome)
+library(medicaldata)
+library(tidyverse)
+library(performance)
+
+data(theoph)
+theoph <- theoph |> as_tibble()
+
+theoph_max_conc <- theoph |>
+  group_by(Subject) |>
+  summarise(
+    max_conc = max(conc),
+    # these should not change:
+    Wt = unique(Wt),
+    Dose = unique(Dose)
+  ) |>
+  mutate(half_max_conc = max_conc / 2)
+theoph_max_conc <- theoph_max_conc |>
+  left_join(
+    theoph |>
+      select(Subject, conc, Time),
+    by = join_by("Subject" == "Subject", "max_conc" == "conc")
+  ) |>
+  rename(max_time = Time)
+```
+
+## Continuous outcomes
+
+- not so common in medicine
+- linear regression model:
+
+$$
+y = \alpha + \beta_i \cdot x_i + error
+$$
+
+- estimation:
+  - _a_ for $\alpha$
+  - $b_i$ for $\beta_i$
+
+:::notes
+- error is calculated as $y - \hat{y}$ (observed - predicted) _aka_ residual
+- examples: _blood pressure_, _quality of life_ scale
+- more common in _health economics_
+:::
+
+## Continuous outcomes - example {.smaller .scrollable}
+
+```{=html}
+<img src="img/medicaldata_icon_120.png" alt="medicaldata R package logo" style="position: absolute; top: 50px; right: 5px">
+```
+
+[Cohort Study of the Pharmacokinetics of Oral Theophylline](https://higgi13425.github.io/medicaldata/reference/theoph.html)
+
+```{r}
+skimr::skim(theoph)
+```
+
+## Continuous outcomes - example
+
+:::::: {.columns}
+::: {.column}
+```{r}
+#| label: plot_cont_code
+#| echo: true
+#| eval: false
+ggplot(theoph) +
+  aes(Time, conc) +
+  geom_line() +
+  theme_minimal() +
+  facet_grid(
+    rows = vars(Subject)
+  )
+```
+:::
+::: {.column}
+
+```{r}
+#| label: plot_cont
+#| echo: false
+#| eval: true
+#| out-height: 700px
+#| fig-height: 11
+#| fig-width: 8
+ggplot(theoph) +
+  aes(Time, conc) +
+  geom_line() +
+  theme_minimal() +
+  facet_grid(rows = vars(Subject))
+```
+:::
+:::
+
+## Continuous outcomes - example
+
+```{r}
+#| echo: true
+(max_time_model <- lm(
+  max_time ~ Wt,
+  data = theoph_max_conc
+))
+max_time_model |>
+  broom::tidy(conf.int = TRUE)
+```
+
+## Performance
+
+_observed vs. predicted values_
+
+$$
+R^2 = \frac{\mathrm{MSS}}{\mathrm{TSS}} \\
+= \frac{\sum (\hat{y} - mean(y))^2}{\sum (\hat{y} - mean(y))^2 + \sum (y - \hat{y})^2}
+$$
+
+:::notes
+- MSS = model sum of squares - variability explained by one or more predictors
+- TSS = total sum of squares - total variance
+- RSS = residual sum of squares - variance of the error term ($\sum (y - \hat{y})^2$)
+:::
+
+```{r}
+#| echo: true
+r2(max_time_model)
+```
+
+## More flexible approaches
+
+_generalized additive model(GAM)_
+
+$$
+y = \alpha + f_i(x_i) + \mathrm{error}
+$$
+
+- non-linear effects!
+
+. . . 
+
+- even more flexible!
+
+$$
+g(y) = \alpha + f_i(x_i) + \mathrm{error}
+$$
+
