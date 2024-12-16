@@ -1,11 +1,18 @@
-## BIOS Xmas seminar
+# BIOS Xmas seminar
 
 Kapittel 4 av "Clinical prediction models" ved Ewout W. Steyerberg.
 
-### Presentations
+[Official webpage](https://link.springer.com/book/10.1007/978-3-030-16399-0).
+
+[Book webpage](https://www.clinicalpredictionmodels.org/) with extra
+materials to some chapters.
+
+[Bookdown](https://clinical-prediction-models.github.io/supplementary-material/).
+
+## Presentations
 
 [4.1 Continuous outcomes](presentation/01_cont_outcomes.html)
 
-### Exercises
+## Exercises
 
 [4.1 Continuous outcomes](scripts/01_cont_outcomes.R)

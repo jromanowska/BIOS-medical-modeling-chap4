@@ -129,6 +129,10 @@ $$
 - MSS = model sum of squares - variability explained by one or more predictors
 - TSS = total sum of squares - total variance
 - RSS = residual sum of squares - variance of the error term ($\sum (y - \hat{y})^2$)
+- $R^2$ is related to spread of values
+
+TODO: maybe I should put the example figure from the book here?
+
 :::
 
 ```{r}

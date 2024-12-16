@@ -1,0 +1,184 @@
+---
+author: "Julia Romanowska"
+title: "Statistical Models for Prediction, Chap.4"
+subtitle: "4.2 Binary Outcomes"
+date: "2024-12-19"
+format:
+  revealjs:
+    theme: night
+    embed-resources: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(fontawesome)
+library(medicaldata)
+library(tidyverse)
+library(performance)
+```
+
+## Binary outcomes
+
+- model: logistic regression
+
+$$
+\mathrm{logit}(p(y = 1)) = a + b_i \cdot x_i
+$$
+
+- estimation: ML, penalized ML
+
+. . . 
+
+- interpretation: coefficients relate to 1 unit difference in $x_i$
+
+:::notes
+- log.regr. is simply generalized linear model with log-link (binomial family)
+- many of the principles of linear regression apply here as well
+- log-link is used to restrict predictions to 0--1
+- the equation above is called _linear predictor_ (lp)
+- $exp(b)$ is _odds ratio_
+:::
+
+## $R^2$ in logistic regression
+
+better models have a wider spread in predictions
+
+![Fig.4.4](img/fig_4_4.png)
+
+## $R^2$ on log-likelihood scale
+
+$$
+LL = \sum y \cdot \log(p) + (1-y) \cdot \log(1-p)
+$$
+
+- perfect model: $LL = 0$
+- usually: $LL < 0$ and deviance: $-2LL > 0$
+
+:::notes
+- log-likelihood is used in numerical estimation, for convenience
+- _y_ is the actually observed outcome; _p_ is the predicted probability
+- null model: model with average predictions
+:::
+
+. . . 
+
+- comparing with null model = _likelihood ratio_:
+
+$$
+LL_0 = \sum y \cdot \log(\mathrm{mean}(y)) + (1-y) \cdot \log(1 - \mathrm{mean}(y))
+LR = -2(LL_0 - LL_1)
+$$
+
+:::notes
+- LR can be used for univariate analysis and testing of joint importance of a
+set of predictors
+- absolute values of LR depend on _n_ (sample size) and event rate
+:::
+
+## $R^2$ on log-likelihood scale
+
+$$
+R^2 = \left( 1- e^{-LR} \right) / \left( 1 - e^{-2LL_0} \right)
+$$
+
+:::notes
+- this $R^2$ is approx.linear with LR
+- scales from 0% to 100% - simple interpretation
+- based on LL-scale, which is natural to logistic regression
+:::
+
+![Fig.4.6](img/fig_4_6.png)
+
+:::notes
+- _c_ statistic = area under the receiver operating characteristic curve;
+- indicates how well discriminative the model is: the larger the value, the better the model
+:::
+
+## Other $R^2$
+
+ref from the book: ["What’s the Best R-Squared for Logistic Regression?"](https://statisticalhorizons.com/r2logistic/), Paul Allison, 2013
+
+```{r}
+#| label: help_r2
+#| echo: true
+#| eval: false
+# function from {performance} R package
+?r2
+```
+
+## Related models
+
+- log.regr. assumes that _y_ follows binomial distribution
+- doesn't hold if outcomes are correlated
+
+- other models:
+  - GEE = generalized estimation equations
+  - random effect models
+
+:::notes
+- correlations between outcomes: e.g., grouping of patients, multiple events
+in the same subject
+:::
+
+# Naïve Bayes
+
+## Bayes rule
+
+- prior probability of disease: $p(D)$
+- posterior probability of disease: $p(D|x)$
+
+. . . 
+
+- diagnostic likelihood ratio for symptom $x$:
+
+$$
+LR(x) = \frac{p(x|D)}{p(x|!D)}
+$$
+
+:::notes
+- _D_ = presence of disease; _!D_ = no disease
+:::
+
+$$
+\mathrm{Odds}(D|x) = \frac{p(D))}{(1-p(D))} \cdot  LR(x) \\
+logit(D|x) = logit(D) + log(LR(x))
+$$
+
+- similar to univariate logistic model!
+
+## Prediction with Naïve Bayes
+
+- prediction of symptoms' combination:    
+post-$x_1$ is prior for $x_2$, post-$x_2$ is prior for $x_3$, etc.
+  - `r fa("triangle-exclamation")` only for conditionally-independent variables!
+  - might give very good discrimination!
+  - applied for effects of genetic markers
+
+. . . 
+
+- simple correction for correlated predictors:    
+add calibration slope to the model
+
+$$
+\mathrm{logit}(y) = \alpha + \beta_{cal} \cdot lp_u
+$$
+
+# Machine learning
+
+## Neural networks
+
+- GAM
+- generalized _nonlinear_ models: NN (neural networks)
+- input layer - hidden layer(s) - output layer
+- iterative learning
+- penalization not to "overtrain"
+
+## Tree models
+
+- classification and regression tree (CART) _aka_ recursive partitioning
+- splitting of patients based on cut-off:
+  - maximum separation between subgroups
+  - minimum variability within subgroup
+
+- many trees: _random forest_
