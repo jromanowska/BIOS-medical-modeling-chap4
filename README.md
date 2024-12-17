@@ -16,3 +16,5 @@ materials to some chapters.
 ## Exercises
 
 [4.1 Continuous outcomes](scripts/01_cont_outcomes.R)
+
+[STATA code and data](https://github.com/jromanowska/BIOS-medical-modeling-chap4/tree/main/scripts/STATA_scripts) (from Roy)
