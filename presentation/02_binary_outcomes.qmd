@@ -16,6 +16,10 @@ library(fontawesome)
 library(medicaldata)
 library(tidyverse)
 library(performance)
+
+data(cath, package = "medicaldata")
+cath <- as_tibble(cath) |>
+  mutate(across(c(sex, sigdz, tvdlm), as.factor))
 ```
 
 ## Binary outcomes
@@ -105,6 +109,18 @@ ref from the book: ["What’s the Best R-Squared for Logistic Regression?"](http
 #| eval: false
 # function from {performance} R package
 ?r2
+```
+
+## Example {.smaller .scrollable}
+
+```{=html}
+<img src="img/medicaldata_icon_120.png" alt="medicaldata R package logo" style="position: absolute; top: 50px; right: 5px">
+```
+
+[Observational Dataset of Cardiac Catheterization](https://higgi13425.github.io/medicaldata/reference/cath.html)
+
+```{r}
+skimr::skim(cath)
 ```
 
 ## Related models
@@ -220,10 +236,20 @@ $$
 - trees are data-hungry!
 :::
 
+## Tree models -- example
+
+```{=html}
+<img src="img/medicaldata_icon_120.png" alt="medicaldata R package logo" style="position: absolute; top: 50px; right: 5px">
+```
+
+[RCT of Indomethacin for Prevention of Post-ERCP Pancreatitis](https://higgi13425.github.io/medicaldata/reference/indo_rct.html)
+
+
 ## Other methods
 
 - multivariate additive regression splines (**MARS**)
   - [example in R](https://bradleyboehmke.github.io/HOML/mars.html)
 - support vector machine (**SVM**)
   - regression and classification
+
 
