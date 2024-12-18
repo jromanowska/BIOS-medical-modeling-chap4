@@ -184,5 +184,46 @@ $$
 - many trees: _random forest_
 
 :::notes
-[Hands-on ML with R](https://bradleyboehmke.github.io/HOML/DT.html)
+- [Hands-on ML with R](https://bradleyboehmke.github.io/HOML/DT.html)
+- random forest:
+  - constructed from a data set with permutations or resampling
+  - generate predictions by running a subject through multiple trees and averaging the results
 :::
+
+## Tree models {.smaller}
+### advantages and disadvantages
+
+:::::: {.columns}
+::: {.column}
+`r fa("circle-plus")` _advantages:_
+
+- simple presentation
+- interaction effects incorporated
+:::
+::: {.column}
+`r fa("circle-minus")` _disadvantages_
+
+- all continuous variables categorized
+- cut-offs lead to overfitting
+- interactions between all predictors
+- some predictors are only in certain branches
+- poor prediction performance of tree models
+:::
+:::
+
+:::notes
+- decision tree is similar to how physicians think
+- trees are good for huge datasets with only categorical variables
+- _trees cannot estimate main effects!_
+- cut-off points for continuous variables are usually data-based and will lead to overfitting
+- predictors are _selectively_ considered when their effects are relatively large
+- trees are data-hungry!
+:::
+
+## Other methods
+
+- multivariate additive regression splines (**MARS**)
+  - [example in R](https://bradleyboehmke.github.io/HOML/mars.html)
+- support vector machine (**SVM**)
+  - regression and classification
+
