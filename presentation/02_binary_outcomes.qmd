@@ -70,7 +70,7 @@ $$
 - comparing with null model = _likelihood ratio_:
 
 $$
-LL_0 = \sum y \cdot \log(\mathrm{mean}(y)) + (1-y) \cdot \log(1 - \mathrm{mean}(y))
+LL_0 = \sum y \cdot \log(\mathrm{mean}(y)) + (1-y) \cdot \log(1 - \mathrm{mean}(y)) \\
 LR = -2(LL_0 - LL_1)
 $$
 
